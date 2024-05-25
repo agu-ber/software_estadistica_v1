@@ -1,4 +1,6 @@
 # Definición de funciones
+def prueba_pal_commit():
+    print("pruebita")
 
 def media(lista: list) -> float:
     suma = sum(lista)
@@ -214,4 +216,4 @@ Opción elegida: """))
 
     else:
         print("Opción no válida, por favor seleccione una opción válida.")
-        
+
