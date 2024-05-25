@@ -1,6 +1,4 @@
 # Definición de funciones
-def prueba_pal_commit():
-    print("pruebita")
 
 def media(lista: list) -> float:
     suma = sum(lista)
@@ -93,127 +91,134 @@ conteo_ordenado = {}
 nros = []
 
 # Lógica principal
+while True:    
+    try:
+        can = int(input("Ingrese la cantidad de datos que quiere usar: (o ingrese 0 para salir): "))
+        
+        if can == 0:
+            print("Cerrando aplicación")
+            break
+        
+        for i in range(can):
+                nro = float(input("Ingrese el dato: "))
+                nros.append(nro)
 
-can = int(input("Ingrese la cantidad de datos que quiere usar: "))
-for i in range(can):
-        nro = float(input("Ingrese el dato: "))
-        nros.append(nro)
+        for i in nros:
+                    if i in conteo:
+                        conteo[i] += 1
+                    else:
+                        conteo[i] = 1
 
-for i in nros:
-            if i in conteo:
-                conteo[i] += 1
+        claves_ordenadas = list(conteo.keys())
+        claves_ordenadas.sort()
+        for clave in claves_ordenadas:
+            conteo_ordenado[clave] = conteo[clave]
+
+        while True:
+            opcion_a = int(input("""\nSeleccione qué tipo de medida quiere calcular:
+                            
+            0 = Salir
+            1 = Medidas de posición         
+            2 = Medidas de dispersión  
+                                                
+        Opción elegida: """))
+
+            if opcion_a == 0:
+                print("Cerrando aplicación")
+                break
+
+            elif opcion_a == 1:
+
+                opcion_b = int(input("""\nSeleccione qué medida de posición quiere calcular:
+                            
+            0 = Salir
+            1 = Media         
+            2 = Mediana
+            3 = Moda                           
+                                                
+        Opción elegida: """))
+                
+                if opcion_b == 1:
+
+                    res_media = media(nros) 
+                    print("\nMedia: " + str(res_media))
+                    input("Presione enter para continuar ")
+
+                elif opcion_b == 2:
+
+                    res_mediana = mediana(nros)
+                    print("\nMediana: " + str(res_mediana))
+                    input("Presione enter para continuar ")
+
+                elif opcion_b == 3:
+
+                    res_moda, max_frecuencia = moda(conteo, conteo_ordenado)
+                    print("")
+                    for valor in res_moda:
+                        print("Moda:", str(valor))
+
+                    print("\nFrecuencia:", str(max_frecuencia))
+                    input("Presione enter para continuar ")
+
+                else:
+                    print("Opción no válida, por favor seleccione una opción válida.")
+
+            elif opcion_a == 2:
+
+                opcion_b = int(input("""\nSeleccione qué medida de dispersión quiere calcular:
+                            
+            0 = Salir
+            1 = Rango         
+            2 = Varianza
+            3 = Desviación estándar
+            4 = Cuartiles
+            5 = Tabla de frecuencias                       
+                                                
+        Opción elegida: """))
+                
+                if opcion_b == 1:
+                    
+                    res_rango = rango(nros)
+                    print("\nRango: ", str(res_rango))
+                    input("Presione enter para continuar ")
+
+                elif opcion_b == 2:
+                    
+                    res_varianza = varianza(nros)
+                    print("\nVarianza: ", str(res_varianza))
+                    input("Presione enter para continuar ")
+
+                elif opcion_b == 3:
+                    
+                    res_desviacion_estandar = desviacion_estandar(nros)
+                    print("\nDesviación estándar: ", str(res_desviacion_estandar))
+                    input("Presione enter para continuar ")
+
+                elif opcion_b == 4:
+
+                    res_Q1, res_Q2, res_Q3 = cuartiles(nros)
+                    print(f"\nQ1 (25%): {res_Q1}")
+                    print(f"Q2 (50%, mediana): {res_Q2}")
+                    print(f"Q3 (75%): {res_Q3}")
+                    input("Presione enter para continuar ")
+
+                elif opcion_b == 5:
+
+                    tabla = "\nFrecuencias:" +\
+                        "\nNúmero | fi  |   fri   |  fri%    |  Fi  |   Fri    |   Fri%" +\
+                        "\n---------------------------------------------------------------"
+                    print(tabla)
+
+                    filas = frecuencias(conteo_ordenado)
+                    for fila in filas:
+                        print(fila)
+
+                    input("\nPresione enter para continuar ")
+                
+                else:
+                    print("Opción no válida, por favor seleccione una opción válida.")
+
             else:
-                conteo[i] = 1
-
-claves_ordenadas = list(conteo.keys())
-claves_ordenadas.sort()
-for clave in claves_ordenadas:
-     conteo_ordenado[clave] = conteo[clave]
-
-while True:
-    opcion_a = int(input("""\nSeleccione qué tipo de medida quiere calcular:
-                       
-    0 = Salir
-    1 = Medidas de posición         
-    2 = Medidas de dispersión  
-                                        
-Opción elegida: """))
-
-    if opcion_a == 0:
-        print("Cerrando aplicación")
-        break
-
-    elif opcion_a == 1:
-
-        opcion_b = int(input("""\nSeleccione qué medida de posición quiere calcular:
-                       
-    0 = Salir
-    1 = Media         
-    2 = Mediana
-    3 = Moda                           
-                                        
-Opción elegida: """))
-        
-        if opcion_b == 1:
-
-            res_media = media(nros) 
-            print("\nMedia: " + str(res_media))
-            input("Presione enter para continuar ")
-
-        elif opcion_b == 2:
-
-            res_mediana = mediana(nros)
-            print("\nMediana: " + str(res_mediana))
-            input("Presione enter para continuar ")
-
-        elif opcion_b == 3:
-
-            res_moda, max_frecuencia = moda(conteo, conteo_ordenado)
-            print("")
-            for valor in res_moda:
-                print("Moda:", str(valor))
-
-            print("\nFrecuencia:", str(max_frecuencia))
-            input("Presione enter para continuar ")
-
-        else:
-            print("Opción no válida, por favor seleccione una opción válida.")
-
-    elif opcion_a == 2:
-
-        opcion_b = int(input("""\nSeleccione qué medida de dispersión quiere calcular:
-                       
-    0 = Salir
-    1 = Rango         
-    2 = Varianza
-    3 = Desviación estándar
-    4 = Cuartiles
-    5 = Tabla de frecuencias                       
-                                        
-Opción elegida: """))
-        
-        if opcion_b == 1:
-            
-            res_rango = rango(nros)
-            print("\nRango: ", str(res_rango))
-            input("Presione enter para continuar ")
-
-        elif opcion_b == 2:
-            
-            res_varianza = varianza(nros)
-            print("\nVarianza: ", str(res_varianza))
-            input("Presione enter para continuar ")
-
-        elif opcion_b == 3:
-            
-            res_desviacion_estandar = desviacion_estandar(nros)
-            print("\nDesviación estándar: ", str(res_desviacion_estandar))
-            input("Presione enter para continuar ")
-
-        elif opcion_b == 4:
-
-            res_Q1, res_Q2, res_Q3 = cuartiles(nros)
-            print(f"\nQ1 (25%): {res_Q1}")
-            print(f"Q2 (50%, mediana): {res_Q2}")
-            print(f"Q3 (75%): {res_Q3}")
-            input("Presione enter para continuar ")
-
-        elif opcion_b == 5:
-
-            tabla = "\nFrecuencias:" +\
-                "\nNúmero | fi  |   fri   |  fri%    |  Fi  |   Fri    |   Fri%" +\
-                "\n---------------------------------------------------------------"
-            print(tabla)
-
-            filas = frecuencias(conteo_ordenado)
-            for fila in filas:
-                print(fila)
-
-            input("\nPresione enter para continuar ")
-        
-        else:
-            print("Opción no válida, por favor seleccione una opción válida.")
-
-    else:
-        print("Opción no válida, por favor seleccione una opción válida.")
-
+                print("Opción no válida, por favor seleccione una opción válida.")
+    except ValueError:
+        print("Error: Por favor, ingrese un número válido.")   
