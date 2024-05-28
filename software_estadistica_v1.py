@@ -22,9 +22,12 @@ def mediana(lista: List[float]) -> float:
     
 def moda(lista: Dict[float, int], lista_ordenada: Dict[float, int]) -> Tuple[List[float], float]:
     max_frecuencia = max(lista.values())
-    res_moda = [numero for numero, frecuencia in lista_ordenada.items() if frecuencia == max_frecuencia]
-
-    return res_moda, max_frecuencia
+    
+    if list(lista.values()).count(max_frecuencia) == len(lista):
+        return None, None
+    else:
+        res_moda = [numero for numero, frecuencia in lista_ordenada.items() if frecuencia == max_frecuencia]
+        return res_moda, max_frecuencia
 
 def rango(lista: List[float]) -> float:
     lista_ordenada = sorted(lista)
@@ -95,12 +98,13 @@ def input_int(prompt: str) -> int:
         except ValueError:
             print("Entrada inválida. Por favor, ingrese un número válido.")
 
-def input_float(prompt: str) -> float:
+def input_float_list(prompt: str) -> List[float]:
     while True:
         try:
-            return float(input(prompt))
+            input_data = input(prompt)
+            return [float(x) for x in input_data.split()]
         except ValueError:
-            print("Entrada inválida. Por favor, ingrese un número válido.")
+            print("Entrada inválida. Por favor, ingrese una lista de números separados por espacios.")
 
 # Definición de variables globales
 
@@ -110,10 +114,7 @@ nros = []
 
 # Lógica principal
 
-can = input_int("Ingrese la cantidad de datos que quiere usar: ")
-for i in range(can):
-        nro = input_float("Ingrese el dato: ")
-        nros.append(nro)
+nros = input_float_list("Ingrese los datos separados por espacios: ")
 
 for i in nros:
             if i in conteo:
@@ -166,11 +167,16 @@ Opción elegida: """)
 
             res_moda, max_frecuencia = moda(conteo, conteo_ordenado)
             print("")
-            for valor in res_moda:
-                print("Moda:", valor)
 
-            print("\nFrecuencia:", max_frecuencia)
-            input("Presione enter para continuar ")
+            if res_moda is None:
+                print("El conjunto no tiene moda, todos los valores tienen la misma frecuencia")
+                input("Presione enter para continuar ")
+            else:
+                for valor in res_moda:
+                    print("Moda:", valor)
+
+                print("\nFrecuencia:", max_frecuencia)
+                input("Presione enter para continuar ")
 
         else:
             print("Opción no válida, por favor seleccione una opción válida.")
