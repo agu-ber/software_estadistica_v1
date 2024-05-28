@@ -1,38 +1,40 @@
 # Definición de funciones
 
-def media(lista: list) -> float:
+from typing import List, Tuple, Dict
+
+def media(lista: List[float]) -> float:
     suma = sum(lista)
     res_media = suma / len(lista)
     res_media_redondeado = round(res_media, 4)
 
     return res_media_redondeado
 
-def mediana(lista: list) -> float:
-    lista.sort()
-    v_central = len(lista) // 2
+def mediana(lista: List[float]) -> float:
+    lista_ordenada = sorted(lista)
+    v_central = len(lista_ordenada) // 2
 
-    if len(lista) % 2 == 0:
-        res_mediana = (lista[v_central - 1] + lista[v_central]) / 2
+    if len(lista_ordenada) % 2 == 0:
+        res_mediana = (lista_ordenada[v_central - 1] + lista_ordenada[v_central]) / 2
     else:
-        res_mediana = lista[v_central]
+        res_mediana = lista_ordenada[v_central]
 
     return res_mediana
     
-def moda(lista: dict, lista_ordenada: dict) -> list:
+def moda(lista: Dict[float, int], lista_ordenada: Dict[float, int]) -> Tuple[List[float], float]:
     max_frecuencia = max(lista.values())
     res_moda = [numero for numero, frecuencia in lista_ordenada.items() if frecuencia == max_frecuencia]
 
     return res_moda, max_frecuencia
 
-def rango(lista: list) -> float:
-    lista.sort()
-    minimo = lista[0]
-    maximo = lista[len(lista) - 1]
+def rango(lista: List[float]) -> float:
+    lista_ordenada = sorted(lista)
+    minimo = lista_ordenada[0]
+    maximo = lista_ordenada[len(lista_ordenada) - 1]
     res_rango = maximo - minimo
 
     return res_rango
 
-def varianza(lista: list) -> float:
+def varianza(lista: List[float]) -> float:
     sumatoria = 0
     for numero in lista:
         termino = (numero - media(lista)) ** 2
@@ -43,30 +45,30 @@ def varianza(lista: list) -> float:
 
     return res_varianza_redondeado
 
-def desviacion_estandar(lista: list) -> float:
+def desviacion_estandar(lista: List[float]) -> float:
     res_desviacion_estandar = varianza(lista) ** 0.5
     res_desviacion_estandar_redondeado = round(res_desviacion_estandar, 4)
 
     return res_desviacion_estandar_redondeado
 
-def cuartiles(lista: list) -> float:
-    lista.sort()
-    mitad = len(lista) // 2
+def cuartiles(lista: List[float]) -> Tuple[float, float, float]:
+    lista_ordenada = sorted(lista)
+    mitad = len(lista_ordenada) // 2
 
-    if len(lista) % 2 == 0:
-        nros_izq = lista[:mitad]
+    if len(lista_ordenada) % 2 == 0:
+        nros_izq = lista_ordenada[:mitad]
     else:
-        nros_izq = lista[:mitad+1]
+        nros_izq = lista_ordenada[:mitad+1]
     res_Q1 = mediana(nros_izq)
 
-    res_Q2 = mediana(lista)
+    res_Q2 = mediana(lista_ordenada)
 
-    nros_der = lista[mitad:]
+    nros_der = lista_ordenada[mitad:]
     res_Q3 = mediana(nros_der)
 
     return res_Q1, res_Q2, res_Q3
 
-def frecuencias(lista_ordenada: dict) -> set:
+def frecuencias(lista_ordenada: dict) -> list:
     can = sum(lista_ordenada.values())
     frecuencia_abs_acumulada = 0
     frecuencia_rel_acumulada = 0
@@ -79,10 +81,26 @@ def frecuencias(lista_ordenada: dict) -> set:
         frecuencia_abs_acumulada += frecuencia
         frecuencia_rel_acumulada += frecuencia_relativa
         frecuencia_por_acumulada += frecuencia_porcentual
-        fila = f"{numero:6} | {frecuencia:2}  | {frecuencia_relativa:7.4f} | {frecuencia_porcentual:7.4f}% | {frecuencia_abs_acumulada:3}  | {frecuencia_rel_acumulada:7.4f}  | {frecuencia_por_acumulada:7.4f}%"
+        fila = f"{numero:10} | {frecuencia:2}  | {frecuencia_relativa:7.4f} | {frecuencia_porcentual:7.4f}% | {frecuencia_abs_acumulada:3}  | {frecuencia_rel_acumulada:7.4f}  | {frecuencia_por_acumulada:7.4f}%"
         filas.append(fila)
 
     return filas
+
+# Funciones de validación de entrada
+
+def input_int(prompt: str) -> int:
+    while True:
+        try:
+            return int(input(prompt))
+        except ValueError:
+            print("Entrada inválida. Por favor, ingrese un número válido.")
+
+def input_float(prompt: str) -> float:
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Entrada inválida. Por favor, ingrese un número válido.")
 
 # Definición de variables globales
 
@@ -92,9 +110,9 @@ nros = []
 
 # Lógica principal
 
-can = int(input("Ingrese la cantidad de datos que quiere usar: "))
+can = input_int("Ingrese la cantidad de datos que quiere usar: ")
 for i in range(can):
-        nro = float(input("Ingrese el dato: "))
+        nro = input_float("Ingrese el dato: ")
         nros.append(nro)
 
 for i in nros:
@@ -109,13 +127,13 @@ for clave in claves_ordenadas:
      conteo_ordenado[clave] = conteo[clave]
 
 while True:
-    opcion_a = int(input("""\nSeleccione qué tipo de medida quiere calcular:
+    opcion_a = input_int("""\nSeleccione qué tipo de medida quiere calcular:
                        
     0 = Salir
     1 = Medidas de posición         
     2 = Medidas de dispersión  
                                         
-Opción elegida: """))
+Opción elegida: """)
 
     if opcion_a == 0:
         print("Cerrando aplicación")
@@ -123,25 +141,25 @@ Opción elegida: """))
 
     elif opcion_a == 1:
 
-        opcion_b = int(input("""\nSeleccione qué medida de posición quiere calcular:
+        opcion_b = input_int("""\nSeleccione qué medida de posición quiere calcular:
                        
-    0 = Salir
+    0 = Volver
     1 = Media         
     2 = Mediana
     3 = Moda                           
                                         
-Opción elegida: """))
+Opción elegida: """)
         
         if opcion_b == 1:
 
             res_media = media(nros) 
-            print("\nMedia: " + str(res_media))
+            print("\nMedia:", res_media)
             input("Presione enter para continuar ")
 
         elif opcion_b == 2:
 
             res_mediana = mediana(nros)
-            print("\nMediana: " + str(res_mediana))
+            print("\nMediana:", res_mediana)
             input("Presione enter para continuar ")
 
         elif opcion_b == 3:
@@ -149,9 +167,9 @@ Opción elegida: """))
             res_moda, max_frecuencia = moda(conteo, conteo_ordenado)
             print("")
             for valor in res_moda:
-                print("Moda:", str(valor))
+                print("Moda:", valor)
 
-            print("\nFrecuencia:", str(max_frecuencia))
+            print("\nFrecuencia:", max_frecuencia)
             input("Presione enter para continuar ")
 
         else:
@@ -159,48 +177,48 @@ Opción elegida: """))
 
     elif opcion_a == 2:
 
-        opcion_b = int(input("""\nSeleccione qué medida de dispersión quiere calcular:
+        opcion_b = input_int("""\nSeleccione qué medida de dispersión quiere calcular:
                        
-    0 = Salir
+    0 = Volver
     1 = Rango         
     2 = Varianza
     3 = Desviación estándar
     4 = Cuartiles
     5 = Tabla de frecuencias                       
                                         
-Opción elegida: """))
+Opción elegida: """)
         
         if opcion_b == 1:
             
             res_rango = rango(nros)
-            print("\nRango: ", str(res_rango))
+            print("\nRango:", res_rango)
             input("Presione enter para continuar ")
 
         elif opcion_b == 2:
             
             res_varianza = varianza(nros)
-            print("\nVarianza: ", str(res_varianza))
+            print("\nVarianza:", res_varianza)
             input("Presione enter para continuar ")
 
         elif opcion_b == 3:
             
             res_desviacion_estandar = desviacion_estandar(nros)
-            print("\nDesviación estándar: ", str(res_desviacion_estandar))
+            print("\nDesviación estándar:", res_desviacion_estandar)
             input("Presione enter para continuar ")
 
         elif opcion_b == 4:
 
             res_Q1, res_Q2, res_Q3 = cuartiles(nros)
-            print(f"\nQ1 (25%): {res_Q1}")
-            print(f"Q2 (50%, mediana): {res_Q2}")
-            print(f"Q3 (75%): {res_Q3}")
+            print("\nQ1 (25%):", res_Q1)
+            print("Q2 (50%, mediana):", res_Q2)
+            print("Q3 (75%):", res_Q3)
             input("Presione enter para continuar ")
 
         elif opcion_b == 5:
 
             tabla = "\nFrecuencias:" +\
-                "\nNúmero | fi  |   fri   |  fri%    |  Fi  |   Fri    |   Fri%" +\
-                "\n---------------------------------------------------------------"
+                "\n   Número  | fi  |   fri   |  fri%    |  Fi  |   Fri    |   Fri%" +\
+                "\n-------------------------------------------------------------------"
             print(tabla)
 
             filas = frecuencias(conteo_ordenado)
@@ -214,4 +232,3 @@ Opción elegida: """))
 
     else:
         print("Opción no válida, por favor seleccione una opción válida.")
-        
