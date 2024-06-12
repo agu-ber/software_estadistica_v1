@@ -61,14 +61,20 @@ def varianza(lista: List[float]) -> float:
         termino = (numero - media(lista)) ** 2 # Calcula el cuadrado de Xi menos la media
         sumatoria += termino
 
-    res_varianza = sumatoria / (len(lista) - 1) # n-1
-    res_varianza_redondeado = round(res_varianza, 4)
+    if len(lista) != 1:
+        res_varianza = sumatoria / (len(lista) - 1) # n-1
+        res_varianza_redondeado = round(res_varianza, 4)
+    else: # Si hay solo un elemento, no hay varianza
+        res_varianza_redondeado = None
 
     return res_varianza_redondeado # Retorna la varianza redondeada
 
 def desviacion_estandar(lista: List[float]) -> float:
-    res_desviacion_estandar = varianza(lista) ** 0.5 # Calcula la raíz cuadrada de la varianza
-    res_desviacion_estandar_redondeado = round(res_desviacion_estandar, 4)
+    if len(lista) != 1:
+        res_desviacion_estandar = varianza(lista) ** 0.5 # Calcula la raíz cuadrada de la varianza
+        res_desviacion_estandar_redondeado = round(res_desviacion_estandar, 4)
+    else: # Si hay un solo elemento, no hay desviación
+        res_desviacion_estandar_redondeado = None
 
     return res_desviacion_estandar_redondeado # Retorna la desviación estándar redondeada
 
@@ -214,13 +220,21 @@ Opción elegida: """)
         elif opcion_b == 2:
             
             res_varianza = varianza(nros)
-            print("\nVarianza:", res_varianza)
+
+            if res_varianza:
+                print("\nVarianza:", res_varianza)
+            else:
+                print("\nEl conjunto no tiene varianza")
             input("Presione enter para continuar ")
 
         elif opcion_b == 3:
             
             res_desviacion_estandar = desviacion_estandar(nros)
-            print("\nDesviación estándar:", res_desviacion_estandar)
+
+            if res_desviacion_estandar:
+                print("\nDesviación estándar:", res_desviacion_estandar)
+            else:
+                print("\nEl conjunto no tiene desviación estándar")
             input("Presione enter para continuar ")
         
         else:
